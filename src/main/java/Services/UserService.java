@@ -9,6 +9,9 @@ import java.util.List;
 public class UserService {
     UserDAO userDAO = new UserDAO();
 
+    public UserService() {
+    }
+
     public List<User> list() throws SQLException {
         return userDAO.list();
     }
@@ -17,7 +20,7 @@ public class UserService {
         return userDAO.getUserById(id);
     }
 
-    public List<User> getRichestUser() throws  SQLException {
+    public User getRichestUser() throws  SQLException {
         return userDAO.getRichestUser();
     }
 }

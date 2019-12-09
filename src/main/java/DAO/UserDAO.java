@@ -14,6 +14,9 @@ public class UserDAO {
     static final String USER = "dev";
     static final String PASSWORD = "1234";
 
+    public UserDAO() {
+    }
+
     public List<User> list() throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -81,25 +84,32 @@ public class UserDAO {
         return user;
     }
 
-    public List<User> getRichestUser() throws SQLException {
+    public User getRichestUser() throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<User> user = new ArrayList<User>();
+        User user = new User();
 
         try {
-            connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-            statement = connection.prepareStatement("select user.userid, user.name, user.sureName from account right outer join user on user.userid=account.userid where account=(select max(account) from account)"); // search by one highest account, not by sum
-            resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                /*user.setUserid(resultSet.getLong("userid"));
+            connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+            statement = connection.prepareStatement("select user.userid, user.name, user.sureName from account right outer join user on user.userid=account.userid where account=(select max(account) from account);"); // search by one highest account, not by sum
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+
+                user.setUserId(resultSet.getLong("userid"));
                 user.setName(resultSet.getString("name"));
                 user.setSurName(resultSet.getString("sureName"));
-            */
-                user.add(new User(resultSet.getLong("userid"), resultSet.getString("name"), resultSet.getString("sureName")));
+
             }
-        } finally {
+        }/* catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }*/ finally {
             if (resultSet != null) try {
                 resultSet.close();
             } catch (SQLException ignore) {

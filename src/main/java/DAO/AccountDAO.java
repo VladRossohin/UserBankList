@@ -15,6 +15,10 @@ public class AccountDAO {
     static final String USER = "dev";
     static final String PASSWORD = "1234";
 
+
+    public AccountDAO() {
+    }
+
     public List<Account> list() throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -48,5 +52,38 @@ public class AccountDAO {
             }
         }
         return accounts;
+    }
+
+
+    public Long getSumOfAccounts() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Long sum = new Long(null);
+
+
+
+        try {
+            connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+            statement = connection.prepareStatement("SELECT  SUM(account) sum FROM account");
+            resultSet = statement.executeQuery();
+
+            sum = resultSet.getLong("sum");
+        } finally {
+            if (resultSet != null) try {
+                resultSet.close();
+            } catch (SQLException ignore) {
+            }
+            if (statement != null) try {
+                statement.close();
+            } catch (SQLException ignore) {
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (SQLException ignore) {
+            }
+        }
+        return sum;
+
     }
 }

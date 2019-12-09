@@ -11,7 +11,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/UserServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>Servlets.AccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/AccountServlet</url-pattern>
     </servlet-mapping>
 </web-app>
 
